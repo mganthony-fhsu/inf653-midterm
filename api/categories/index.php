@@ -58,7 +58,6 @@ if ($method === 'GET' && isset($_GET["id"])) {
         echo json_encode(
             array('message'=>"categoryId Not Found")
         );
-
     } else {
     echo json_encode($category_item);
     }
@@ -74,9 +73,10 @@ if ($method === 'POST') {
         echo json_encode(
             array('message'=>'Missing Required Parameters')
         );
+        return;
     }
 
-    // create the post
+    // create the category
     if ($category_obj->create()) {
         $category_item = array(
             'id' => $category_obj->id,
@@ -95,15 +95,11 @@ if ($method === 'PUT') {
     $category_obj->category = $data->category;
 
     // validate request
-    if (empty($category_obj->category)) {
+    if (empty($category_obj->id) || empty($category_obj->category)) {
         echo json_encode(
             array('message'=>'Missing Required Parameters')
         );
-    }
-    if (empty($category_obj->id)) {
-        echo json_encode(
-            array('message'=>'Missing Required Parameters')
-        );
+        return;
     }
 
     // create the post
@@ -113,11 +109,10 @@ if ($method === 'PUT') {
             'category' => $category_obj->category
         ); 
         echo(json_encode($category_item));
-
     }
 }
 
-// CATEGORY PUT
+// CATEGORY DELETE
 if ($method === 'DELETE') {
     // get posted data
     $data = json_decode(file_get_contents("php://input"));

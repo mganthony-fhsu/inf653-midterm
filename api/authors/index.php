@@ -74,9 +74,10 @@ if ($method === 'POST') {
         echo json_encode(
             array('message'=>'Missing Required Parameters')
         );
+        return;
     }
 
-    // create the post
+    // create the author record
     if ($author_obj->create()) {
         $author_item = array(
             'id' => $author_obj->id,
@@ -95,19 +96,17 @@ if ($method === 'PUT') {
     $author_obj->author = $data->author;
 
     // validate request
-    if (empty($author_obj->author)) {
+    if (empty($author_obj->author) || empty($author_obj->id)) {
         echo json_encode(
             array('message'=>'Missing Required Parameters')
         );
-    }
-    if (empty($author_obj->id)) {
-        echo json_encode(
-            array('message'=>'Missing Required Parameters')
-        );
+        return;
     }
 
-    // create the post
+
+    // update the author
     if ($author_obj->update()) {
+        
         $author_item = array(
             'id' => $author_obj->id,
             'author' => $author_obj->author
@@ -117,17 +116,18 @@ if ($method === 'PUT') {
     }
 }
 
-// AUThOR PUT
+// AUThOR DELETE
 if ($method === 'DELETE') {
     // get posted data
     $data = json_decode(file_get_contents("php://input"));
     $author_obj->id = $data->id;
 
     // validate request
-    if (empty($author_obj->id)) {
+    if (empty($author_obj->id) ) {
         echo json_encode(
             array('message'=>'Missing Required Parameters')
         );
+        return;
     }
 
     // create the post

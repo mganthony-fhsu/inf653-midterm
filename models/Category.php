@@ -74,7 +74,8 @@ class Category {
             $stmt->bindParam(':category',$this->category);
 
             // execute query
-            if ($stmt->execute()) {
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
                 return true;
             } 
             //printf("Error: %s.\n", $stmt->error);
@@ -94,7 +95,8 @@ class Category {
             $stmt->bindParam(':id',$this->id);
 
             // execute query
-            if ($stmt->execute()) {
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
                 return true;
             } 
             //printf("Error: %s.\n", $stmt->error);
